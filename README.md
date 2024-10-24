@@ -1,4 +1,4 @@
-## Nextflow pipeline for processing of GPSeq data
+## Nextflow pipeline for processing of YFISH images
 
 ### Requirements
 To be able to run this pipeline you need nextflow (version 23.10 or higher) and singularity (tested on version 3.8.6) installed. This does not work on Mac.
@@ -22,8 +22,8 @@ You can then activate the environment by running:
 ### Testing the pipeline
 First clone the pipeline (this will create a folder in your current working directory)  
 ```
-git clone https://github.com/ljwharbers/nextflow-gpseq
-cd nextflow-gpseq
+git clone https://github.com/ljwharbers/nextflow-gpseqyfish
+cd nextflow-gpseqyfish
 ```
 
 You can test the pipeline by typing:  
