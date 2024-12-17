@@ -48,7 +48,7 @@ process FIND_OOF {
 		tuple val(sample), path("oof.tsv"), emit: tsv
 		tuple val(sample), path("oof.args.pkl"), emit: oof_args
 		tuple val(sample), path("oof.log.txt"), emit: oof_log
-		tuple val(sample), path("*.tiff", includeInputs: true), emit: dapi_infocus
+		tuple val(sample), path("*.tif", includeInputs: true), emit: dapi_infocus
 
 	script:
 		"""
