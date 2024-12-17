@@ -65,20 +65,20 @@ process SEGMENT_TIFF {
 
 	input:
 		tuple val(sample), path(dapi_infocus)
+		val(dapi)
 
 	output:
 		tuple val(sample), path("*mask.tiff"), emit: dapi_masks
 		tuple val(sample), path("tiff_segment.log.txt"), emit: mask_log
 
 	script:
-		"""
-		radiantkit tiff_segment .
+	"""
+	radiantkit tiff_segment .
 		--TCZYX \
 		--threads ${task.cpus} \
-               	--gaussian 2.0 \
-              	 --inreg "^${dapi}.*\.tif$" \
-               	-y
-		"""
+		--gaussian 2.0 \
+		-y
+"""
 }
 
 // Measure objects
@@ -219,28 +219,30 @@ process RADIANT_REPORT {
 workflow {
 	// Get .nd2 files available in the input directory
 	if (params.tif) {
-		Channel
-			.fromPath(params.indir + "/**/*.tif*")
-			.map { file -> tuple(file.baseName, file) }
-			.set { tiff }
-		tiff.view()
+			Channel.fromPath(params.indir + "/**/${params.dapi}*.tif*")
+					.map { file -> tuple(file.baseName, file) }
+					.set { dapi_tiffs }
+			Channel.fromPath(params.indir + "/**/${params.yfish}*.tif*")
+					.map { file -> tuple(file.baseName, file) }
+					.set { yfish_tiffs }
 	} else {
-		Channel
-			.fromPath(params.indir + "/*.nd2")
-			.map { file -> tuple(file.baseName, file) }
-			.set { nd2_files }
-		tiff = ND2_TO_TIFF(nd2_files, params.dz)
+			Channel.fromPath(params.indir + "/*.nd2")
+					.map { file -> tuple(file.baseName, file) }
+					.set { nd2_files }
+			tiff = ND2_TO_TIFF(nd2_files, params.dz)
+			dapi_tiffs = tiff.dapi_tiffs
+			yfish_tiffs = tiff.yfish_tiffs
 	}
 
-	oof = FIND_OOF(tiff.dapi_tiffs)
-	segmented = SEGMENT_TIFF(oof.dapi_infocus)
+	oof = FIND_OOF(dapi_tiffs)
+	segmented = SEGMENT_TIFF(oof.dapi_infocus, params.dapi)
 	objects = MEASURE_OBJECTS(oof.dapi_infocus, segmented.dapi_masks,
 							  params.dapi, params.dx, params.dy, params.dz)
 	select = SELECT_NUCLEI(oof.dapi_infocus, segmented.dapi_masks, params.k_sigma, params.dapi)
 	radial = RADIAL_POPULATION(oof.dapi_infocus,
 							   select.mask_selected,
 							   segmented.dapi_masks,
-							   tiff.yfish_tiffs,
+							   yfish_tiffs,
 							   params.dapi, params.dx,
 							   params.dy, params.dz)
 
@@ -256,8 +258,8 @@ workflow {
 		.join(radial.radial_log)
 		.join(radial.objects)
 		.join(objects)
-		.join(tiff.dapi_tiffs)
-		.join(tiff.yfish_tiffs)
+		.join(dapi_tiffs)
+		.join(yfish_tiffs)
 		.join(segmented.dapi_masks)
 		.join(select.mask_selected)
 		.set { report_input }
