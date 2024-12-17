@@ -30,7 +30,7 @@ process ND2_TO_TIFF {
 
 	script:
 		"""
-		radiant nd2_to_tiff ${nd2} -Z ${dz}
+		radiantkit nd2_to_tiff ${nd2} -Z ${dz}
 		"""
 }
 
@@ -52,7 +52,7 @@ process FIND_OOF {
 		
 	script:
 		"""
-		radiant tiff_findoof . --rename --threads ${task.cpus}
+		radiantkit tiff_findoof . --rename --threads ${task.cpus}
 		"""
 }
 
@@ -72,7 +72,12 @@ process SEGMENT_TIFF {
 		
 	script:
 		"""
-		radiant tiff_segment . --TCZYX --threads ${task.cpus} -y
+		radiantkit tiff_segment . 
+		--TCZYX \
+		--threads ${task.cpus} \
+               	--gaussian 2.0 \
+              	 --inreg "^${dapi}.*\.tif$" \
+               	-y
 		"""
 }
 
@@ -96,7 +101,7 @@ process MEASURE_OBJECTS {
 		
 	script:
 		"""
-		radiant measure_objects . '${dapi}' --aspect ${dz} ${dy} ${dx} --threads ${task.cpus} -y
+		radiantkit measure_objects . '${dapi}' --aspect ${dz} ${dy} ${dx} --threads ${task.cpus} -y
 		"""
 }
 
@@ -123,7 +128,7 @@ process SELECT_NUCLEI {
 	
 	script:
 		"""
-		radiant select_nuclei . '${dapi}' --k-sigma ${k_sigma} --threads ${task.cpus} -y
+		radiantkit select_nuclei . '${dapi}' --k-sigma ${k_sigma} --threads ${task.cpus} -y
 		"""
 }
 
@@ -151,7 +156,7 @@ process RADIAL_POPULATION {
 	
 	script:
 		"""
-		radiant radial_population . '${dapi}' --aspect ${dz} ${dx} ${dy} --mask-suffix mask_selected --threads ${task.cpus} -y
+		radiantkit radial_population . '${dapi}' --aspect ${dz} ${dx} ${dy} --mask-suffix mask_selected --threads ${task.cpus} --slice2d -y
 		"""
 }
 
@@ -207,7 +212,7 @@ process RADIANT_REPORT {
 	
 	script:
 		"""
-		radiant report .
+		radiantkit report .
 		"""
 }
 
