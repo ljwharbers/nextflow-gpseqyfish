@@ -73,11 +73,7 @@ process SEGMENT_TIFF {
 
 	script:
 	"""
-	radiantkit tiff_segment .
-		--threads ${task.cpus} \
-		--gaussian 2.0 \
-		--inreg '^${dapi}.*tif' \
-		-y
+	radiantkit tiff_segment . --threads ${task.cpus} --gaussian 2.0 --inreg '^${dapi}.*tif' -y
 """
 }
 
