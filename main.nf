@@ -68,7 +68,7 @@ process SEGMENT_TIFF {
 		val(dapi)
 
 	output:
-		tuple val(sample), path("*mask.tif*"), emit: dapi_masks
+		tuple val(sample), path("*mask.tif"), emit: dapi_masks
 		tuple val(sample), path("tiff_segment.log.txt"), emit: mask_log
 
 	script:
@@ -115,7 +115,7 @@ process SELECT_NUCLEI {
 		val dapi
 
 	output:
-		tuple val(sample), path("*mask_selected.tif*"), emit: mask_selected
+		tuple val(sample), path("*mask_selected.tif"), emit: mask_selected
 		tuple val(sample), path("select_nuclei.log.txt"), emit: select_log
 		tuple val(sample), path("select_nuclei.data.tsv"), emit: select_data
 		tuple val(sample), path("select_nuclei.args.pkl"), emit: pkl_args
