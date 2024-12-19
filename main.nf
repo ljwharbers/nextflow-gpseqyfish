@@ -68,7 +68,7 @@ process SEGMENT_TIFF {
 		val(dapi)
 
 	output:
-		tuple val(sample), path("*mask.tif*"), emit: dapi_masks
+		tuple val(sample), path("*mask.tif"), emit: dapi_masks
 		tuple val(sample), path("tiff_segment.log.txt"), emit: mask_log
 
 	script:
