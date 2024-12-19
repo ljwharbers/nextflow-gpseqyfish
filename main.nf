@@ -24,8 +24,8 @@ process ND2_TO_TIFF {
 		val dz
 
 	output:
-		tuple val(sample), path("${sample}/${params.dapi}*.tiff"), emit: dapi_tiffs
-		tuple val(sample), path("${sample}/${params.yfish}*.tiff"), emit: yfish_tiffs
+		tuple val(sample), path("${sample}/${params.dapi}*.tif*"), emit: dapi_tiffs
+		tuple val(sample), path("${sample}/${params.yfish}*.tif*"), emit: yfish_tiffs
 		tuple val(sample), path("${sample}/nd2_to_tiff.log.txt"), emit: log
 
 	script:
@@ -48,7 +48,7 @@ process FIND_OOF {
 		tuple val(sample), path("oof.tsv"), emit: tsv
 		tuple val(sample), path("oof.args.pkl"), emit: oof_args
 		tuple val(sample), path("oof.log.txt"), emit: oof_log
-		tuple val(sample), path("*.tif", includeInputs: true), emit: dapi_infocus, optional: true
+		tuple val(sample), path("*.tif*", includeInputs: true), emit: dapi_infocus, optional: true
 
 	script:
 		"""
@@ -68,7 +68,7 @@ process SEGMENT_TIFF {
 		val(dapi)
 
 	output:
-		tuple val(sample), path("*mask.tiff"), emit: dapi_masks
+		tuple val(sample), path("*mask.tif*"), emit: dapi_masks
 		tuple val(sample), path("tiff_segment.log.txt"), emit: mask_log
 
 	script:
@@ -115,7 +115,7 @@ process SELECT_NUCLEI {
 		val dapi
 
 	output:
-		tuple val(sample), path("*mask_selected.tiff"), emit: mask_selected
+		tuple val(sample), path("*mask_selected.tif*"), emit: mask_selected
 		tuple val(sample), path("select_nuclei.log.txt"), emit: select_log
 		tuple val(sample), path("select_nuclei.data.tsv"), emit: select_data
 		tuple val(sample), path("select_nuclei.args.pkl"), emit: pkl_args
