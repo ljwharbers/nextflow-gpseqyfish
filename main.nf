@@ -86,7 +86,7 @@ process MEASURE_OBJECTS {
 
 	input:
 		tuple val(sample), path(dapi_infocus)
-		tuple val(sample), path(dapi_mask)
+		tuple val(sample), path(dapi_masks)
 		val dapi
 		val dx
 		val dy
@@ -110,7 +110,7 @@ process SELECT_NUCLEI {
 
 	input:
 		tuple val(sample), path(dapi_infocus)
-		tuple val(sample), path(dapi_mask)
+		tuple val(sample), path(dapi_masks)
 		val k_sigma
 		val dapi
 
@@ -138,7 +138,7 @@ process RADIAL_POPULATION {
 	input:
 		tuple val(sample), path(dapi_infocus)
 		tuple val(sample), path(mask_selected)
-		tuple val(sample), path(dapi_mask)
+		tuple val(sample), path(dapi_masks)
 		tuple val(sample), path(yfish_tiffs)
 		val dapi
 		val dx
