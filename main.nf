@@ -15,7 +15,7 @@ log.info """\
 
 process ND2_TO_TIFF {
 	label "process_low"
-	tag "Converting ${nd2} to .tiff files"
+	tag "Converting ${nd2} to .tif files"
 
 	container "library://ljwharbers/gpseq/radiantkit:0.0.2"
 
@@ -37,7 +37,7 @@ process ND2_TO_TIFF {
 // Find out of focus
 process FIND_OOF {
 	label "process_high"
-	tag "Finding out of focus in DAPI .tiff files from ${sample}"
+	tag "Finding out of focus in DAPI .tif files from ${sample}"
 
 	container "library://ljwharbers/gpseq/radiantkit:0.0.2"
 
@@ -59,7 +59,7 @@ process FIND_OOF {
 // Segment TIFF files
 process SEGMENT_TIFF {
 	label "process_high"
-	tag "Segmenting ${sample} tiff files"
+	tag "Segmenting ${sample} tif files"
 
 	container "library://ljwharbers/gpseq/radiantkit:0.0.2"
 
@@ -80,7 +80,7 @@ process SEGMENT_TIFF {
 // Measure objects
 process MEASURE_OBJECTS {
 	label "process_high"
-	tag "Measuring objects in ${sample} tiff files"
+	tag "Measuring objects in ${sample} tif files"
 
 	container "library://ljwharbers/gpseq/radiantkit:0.0.2"
 
@@ -104,7 +104,7 @@ process MEASURE_OBJECTS {
 // Select nuclei
 process SELECT_NUCLEI {
 	label "process_medium"
-	tag "Selecting nuclei in ${tiff}*.tiff"
+	tag "Selecting nuclei in ${tiff}*.tif"
 
 	container "library://ljwharbers/gpseq/radiantkit:0.0.2"
 
